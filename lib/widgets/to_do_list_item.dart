@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
 
-class ToDoListItem extends StatefulWidget {
-  @override
-  _ToDoListItemState createState() => _ToDoListItemState();
-}
+class ToDoListItem extends StatelessWidget {
 
-class _ToDoListItemState extends State<ToDoListItem> {
+  final String taskTitle;
+  final bool isChecked;
+  final Function checkboxCallback;
 
-  bool isChecked = false;
+  ToDoListItem({this.taskTitle, this.isChecked , this.checkboxCallback});
 
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
       value: isChecked,
       title: Text(
-          'Bootay!',
+          taskTitle,
           style: TextStyle(
             decoration: isChecked ? TextDecoration.lineThrough : null,
           ),
       ),
       activeColor: Colors.lightGreenAccent,
-      onChanged: (bool newValue) {
-        setState(() {
-          isChecked = newValue;
-        });
-      },
+      onChanged: checkboxCallback,
     );
   }
 }

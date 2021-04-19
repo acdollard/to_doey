@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
 
-class AddTaskScreen extends StatelessWidget {
+class AddTaskScreen extends StatefulWidget {
+
+  Function addTaskCallback;
+  AddTaskScreen(this.addTaskCallback);
+
+  @override
+  _AddTaskScreenState createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+
+  String userInput;
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,16 +42,22 @@ class AddTaskScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
                 child: TextField(
-                    autofocus: true,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                        border: UnderlineInputBorder(
+                  controller: _controller,
+                  autofocus: true,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.lightGreenAccent),
-                    ))),
+                    ),
+                  ),
+                ),
               ),
               ElevatedButton(
                 onPressed: () {
-                  print('Hello there!');
+                  userInput = _controller.text;
+                  widget.addTaskCallback(userInput);
+                  _controller.clear();
+                  print(userInput);
                 },
                 child: Text('Add'),
                 style: ButtonStyle(
