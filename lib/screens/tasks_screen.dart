@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:to_doey/screens/add_task_screen.dart';
+import '../widgets/to_do_list.dart';
+
 
 class TasksScreen extends StatelessWidget {
-
-   bool _value = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,6 +11,19 @@ class TasksScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightGreenAccent,
         child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: AddTaskScreen(),
+                )
+              ),
+
+          );
+        }
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,16 +71,7 @@ class TasksScreen extends StatelessWidget {
                   borderRadius:
                   BorderRadius.only(topLeft: Radius.circular(30.0), topRight: Radius.circular(30.0)),
                 ),
-              child: ListView(
-                padding: EdgeInsets.all(15.0),
-                children: [
-                  CheckboxListTile(
-                      title: Text('Is Flutter sexy?'),
-                      value: _value,
-                      onChanged: (){},
-                  ),
-                ],
-              )
+              child: ToDoList()
             ),
           ),
         ],
@@ -75,6 +79,11 @@ class TasksScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
 
 
 
