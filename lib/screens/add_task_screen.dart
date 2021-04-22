@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/task_data.dart';
 
-class AddTaskScreen extends StatefulWidget {
-
-  Function addTaskCallback;
-  AddTaskScreen(this.addTaskCallback);
-
-  @override
-  _AddTaskScreenState createState() => _AddTaskScreenState();
-}
-
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class AddTaskScreen extends StatelessWidget {
 
   String userInput;
   final TextEditingController _controller = TextEditingController();
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +40,22 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  userInput = _controller.text;
-                  widget.addTaskCallback(userInput);
-                  _controller.clear();
-                  print(userInput);
-                },
-                child: Text('Add'),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) => Colors.lightGreenAccent),
-                ),
+              Consumer<TaskData>(
+                builder: ((context, taskData, child) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      userInput = _controller.text;
+                      taskData.addTask(userInput);
+                      _controller.clear();
+                      Navigator.pop(context);
+                    },
+                    child: Text('Add'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => Colors.lightGreenAccent),
+                    ),
+                  );
+                })
               )
             ],
           ),

@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:to_doey/screens/add_task_screen.dart';
+import 'package:provider/provider.dart';
 import '../widgets/to_do_list.dart';
-import '../models/task.dart';
+import '../models/task_data.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'eatboobs'),
-  ];
-
-  void toggleState(int index) {
-    setState(() {
-      tasks[index].toggleDone();
-    });
-  }
-
-  // void addTaskToList(String task){
-  //  var newTask = Task(name: task);
-  //  tasks.add(newTask);
-  // }
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,13 +20,7 @@ class _TasksScreenState extends State<TasksScreen> {
                     child: Container(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: AddTaskScreen((String value) {
-                    var newTask = Task(name: value);
-                    print(newTask.isDone);
-                    setState(() {
-                      tasks.add(newTask);
-                    });
-                  }),
+                  child: AddTaskScreen(),
                 )),
               );
             }),
@@ -76,7 +51,7 @@ class _TasksScreenState extends State<TasksScreen> {
                             fontSize: 50.0,
                             fontWeight: FontWeight.w700)),
                     Text(
-                      '${tasks.length} Tasks',
+                      '${Provider.of<TaskData>(context).tasks.length} Tasks',
                       style: TextStyle(color: Colors.white, fontSize: 18.0),
                     ),
                   ],
@@ -89,7 +64,7 @@ class _TasksScreenState extends State<TasksScreen> {
                       topLeft: Radius.circular(30.0),
                       topRight: Radius.circular(30.0)),
                 ),
-                child: ToDoList(taskList: tasks, taskToggler: toggleState),
+                child: ToDoList(),
               ),
             ),
           ],

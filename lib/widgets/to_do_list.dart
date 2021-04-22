@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'to_do_list_item.dart';
-import '../models/task.dart';
+import '../models/task_data.dart';
 
 class ToDoList extends StatelessWidget {
-
-  final List<Task> taskList;
-  Function taskToggler;
-
-  ToDoList({this.taskList, this.taskToggler});
-
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemBuilder: (context, index){
-      return ToDoListItem(
-          taskTitle: taskList[index].name,
-          isChecked: taskList[index].isDone,
-          checkboxCallback: (checkboxState) {
-            taskToggler(index);
-          }
+    return Consumer<TaskData>(builder: (context, taskData, child) {
+      return ListView.builder(
+        itemBuilder: (context, index) {
+          return ToDoListItem(
+            taskTitle: taskData.tasks[index].name,
+            isChecked: taskData.tasks[index].isDone,
+            checkboxCallback: (checkboxState) {
+              taskData.updateTask(taskData.tasks[index]);
+            },
+            removeTaskCallback: () {
+              taskData.deleteTask(taskData.tasks[index]);
+            },
+          );
+        },
+        itemCount: taskData.tasks.length,
       );
-    },
-    itemCount: taskList.length,
-    );
+    });
   }
 }
